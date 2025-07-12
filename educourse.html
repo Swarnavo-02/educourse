@@ -1,0 +1,1250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edu Course Learning Platform</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth; /* Smooth scrolling for anchor links */
+        }
+        /* Custom scrollbar for better aesthetics */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+        /* Modal styles */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1000; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: auto;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 500px;
+            position: relative;
+        }
+        .close-button {
+            color: #aaa;
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close-button:hover,
+        .close-button:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        /* Mobile menu specific styles */
+        .mobile-menu {
+            display: none;
+            flex-direction: column;
+            width: 100%;
+            background-color: #6B21A8; /* Darker purple for mobile menu background */
+            position: absolute;
+            top: 64px; /* Height of header */
+            left: 0;
+            padding: 1rem 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            z-index: 999;
+        }
+        .mobile-menu a {
+            padding: 0.75rem 1.5rem;
+            text-align: center;
+            color: white;
+            font-weight: 500;
+            transition: background-color 0.3s;
+        }
+        .mobile-menu a:hover {
+            background-color: #581C87; /* Slightly darker on hover */
+        }
+        .hamburger-icon {
+            display: block; /* Show on mobile */
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: white;
+        }
+        @media (min-width: 768px) { /* md breakpoint */
+            .mobile-menu {
+                display: none !important; /* Hide on desktop */
+            }
+            .hamburger-icon {
+                display: none; /* Hide on desktop */
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Header Section -->
+    <header class="bg-purple-700 text-white py-4 px-6 md:px-12 relative">
+        <div class="container mx-auto flex justify-between items-center">
+            <!-- Logo -->
+            <div class="flex items-center space-x-2">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="white" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span class="text-2xl font-bold" role="heading" aria-level="1">Edu Course</span>
+            </div>
+
+            <!-- Hamburger Icon for Mobile -->
+            <button id="hamburger-btn" class="md:hidden hamburger-icon" aria-label="Open navigation menu">
+                <i class="fas fa-bars"></i>
+            </button>
+
+            <!-- Navigation Links (Hidden on small screens, shown on medium and up) -->
+            <nav class="hidden md:flex space-x-8" aria-label="Main navigation">
+                <a href="#home-section" class="hover:text-purple-200 transition-colors duration-300" data-page="home" aria-current="page">Home</a>
+                <a href="#courses-section" class="hover:text-purple-200 transition-colors duration-300" data-page="courses">Courses</a>
+                <a href="#mentors-section" class="hover:text-purple-200 transition-colors duration-300" data-page="mentors">Mentors</a>
+                <a href="#about-us-section" class="hover:text-purple-200 transition-colors duration-300" data-page="about-us">About Us</a>
+                <a href="#contact-us-section" class="hover:text-purple-200 transition-colors duration-300" data-page="contact-us">Contact Us</a>
+                <a href="#blogs-section" class="hover:text-purple-200 transition-colors duration-300" data-page="blogs">Blogs</a>
+            </nav>
+
+            <!-- Register Now Button -->
+            <button id="register-now-btn" class="bg-white text-purple-700 px-6 py-2 rounded-full font-semibold shadow-md hover:bg-purple-100 transition-colors duration-300 hidden md:block" aria-label="Register Now">
+                Register Now
+            </button>
+        </div>
+
+        <!-- Mobile Menu (initially hidden) -->
+        <nav id="mobile-menu" class="mobile-menu" aria-label="Mobile navigation">
+            <a href="#home-section" class="mobile-nav-link" data-page="home">Home</a>
+            <a href="#courses-section" class="mobile-nav-link" data-page="courses">Courses</a>
+            <a href="#mentors-section" class="mobile-nav-link" data-page="mentors">Mentors</a>
+            <a href="#about-us-section" class="mobile-nav-link" data-page="about-us">About Us</a>
+            <a href="#contact-us-section" class="mobile-nav-link" data-page="contact-us">Contact Us</a>
+            <a href="#blogs-section" class="mobile-nav-link">Blogs</a>
+            <button id="mobile-register-btn" class="bg-white text-purple-700 px-6 py-2 rounded-full font-semibold shadow-md hover:bg-purple-100 transition-colors duration-300 mt-4 mx-auto block" aria-label="Register Now (Mobile)">
+                Register Now
+            </button>
+        </nav>
+    </header>
+
+    <!-- Main Content Area - All sections are now directly in the body -->
+
+    <!-- Home Section (Hero) -->
+    <section id="home-section" class="bg-purple-700 text-white py-16 md:py-24 px-6 md:px-12 relative overflow-hidden">
+        <div class="container mx-auto flex flex-col md:flex-row items-center justify-between relative z-10">
+            <!-- Left Content -->
+            <div class="md:w-1/2 text-center md:text-left mb-10 md:mb-0">
+                <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6">
+                    Choose the Right Course <br> for Your Goal
+                </h1>
+                <p class="text-lg md:text-xl mb-8 opacity-90">
+                    Develop in-demand skills with expert-led courses in AI, ML, data science, and more. Learn at your own pace, anytime!
+                </p>
+                <div class="flex flex-col sm:flex-row justify-center md:justify-start space-y-4 sm:space-y-0 sm:space-x-6">
+                    <!-- Rating Card -->
+                    <div class="bg-white text-gray-800 p-4 rounded-xl shadow-lg flex items-center space-x-3 max-w-xs mx-auto sm:mx-0">
+                        <span class="text-4xl font-bold text-purple-700">4.5</span>
+                        <div>
+                            <div class="flex text-yellow-500 mb-1" role="img" aria-label="4.5 out of 5 stars">
+                                <i class="fas fa-star" aria-hidden="true"></i>
+                                <i class="fas fa-star" aria-hidden="true"></i>
+                                <i class="fas fa-star" aria-hidden="true"></i>
+                                <i class="fas fa-star" aria-hidden="true"></i>
+                                <i class="fas fa-star-half-alt" aria-hidden="true"></i>
+                            </div>
+                            <p class="text-sm">trusted by students all <br> over the world!</p>
+                        </div>
+                    </div>
+                    <!-- Mentors Card -->
+                    <div class="bg-white text-gray-800 p-4 rounded-xl shadow-lg flex items-center space-x-3 max-w-xs mx-auto sm:mx-0">
+                        <span class="text-4xl font-bold text-purple-700">2K+</span>
+                        <div>
+                            <div class="flex -space-x-2 overflow-hidden mb-1" aria-label="2000 plus expert mentors">
+                                <img class="inline-block h-8 w-8 rounded-full ring-2 ring-white" src="https://placehold.co/32x32/FFD700/FFFFFF?text=A" alt="Mentor avatar" loading="lazy">
+                                <img class="inline-block h-8 w-8 rounded-full ring-2 ring-white" src="https://placehold.co/32x32/FF6347/FFFFFF?text=B" alt="Mentor avatar" loading="lazy">
+                                <img class="inline-block h-8 w-8 rounded-full ring-2 ring-white" src="https://placehold.co/32x32/4682B4/FFFFFF?text=C" alt="Mentor avatar" loading="lazy">
+                            </div>
+                            <p class="text-sm">Learn with expert mentors who <br> are ready to guide & share.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Image -->
+            <div class="md:w-1/2 flex justify-center md:justify-end mt-10 md:mt-0">
+                <img src="https://static.vecteezy.com/system/resources/previews/003/094/170/non_2x/college-students-talk-about-university-free-vector.jpg" alt="Happy student learning" class="w-full max-w-md rounded-xl shadow-2xl" loading="lazy">
+            </div>
+        </div>
+        <!-- Decorative elements (sun and sparkle) -->
+        <div class="absolute top-1/4 left-1/4 transform -translate-x-1/2 -translate-y-1/2 text-yellow-400 text-6xl opacity-70" aria-hidden="true">
+            <i class="fas fa-sun"></i>
+        </div>
+        <div class="absolute bottom-1/4 right-1/4 transform translate-x-1/2 translate-y-1/2 text-purple-400 text-5xl opacity-70" aria-hidden="true">
+            <i class="fas fa-star"></i>
+        </div>
+    </section>
+
+    <!-- Choose the Best Course Section -->
+    <section id="courses-section" class="py-16 md:py-24 px-6 md:px-12 bg-white">
+        <div class="container mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-800 text-center mb-4">
+                Choose the Best Course
+            </h2>
+            <p class="text-lg text-gray-600 text-center mb-10 max-w-2xl mx-auto">
+                Find the perfect course on Edu Course to match your goals. Learn anytime, at your own pace, with expert-led courses.
+            </p>
+
+            <!-- Course Categories/Filters -->
+            <div id="category-filters" class="flex flex-wrap justify-center gap-3 mb-8" role="group" aria-label="Course categories">
+                <button data-category="All courses" class="px-6 py-2 rounded-full bg-purple-700 text-white text-sm font-medium shadow-md" aria-pressed="true">All courses</button>
+                <button data-category="UI/UX Designing" class="px-6 py-2 rounded-full bg-gray-200 text-gray-700 text-sm font-medium hover:bg-gray-300 transition-colors duration-300" aria-pressed="false">UI/UX Designing</button>
+                <button data-category="Web Development" class="px-6 py-2 rounded-full bg-gray-200 text-gray-700 text-sm font-medium hover:bg-gray-300 transition-colors duration-300" aria-pressed="false">Web Development</button>
+                <button data-category="Data Visualization" class="px-6 py-2 rounded-full bg-gray-200 text-gray-700 text-sm font-medium hover:bg-gray-300 transition-colors duration-300" aria-pressed="false">Data Visualization</button>
+                <button data-category="Digital Marketing" class="px-6 py-2 rounded-full bg-gray-200 text-gray-700 text-sm font-medium hover:bg-gray-300 transition-colors duration-300" aria-pressed="false">Digital marketing</button>
+                <button data-category="AI/ML" class="px-6 py-2 rounded-full bg-gray-200 text-gray-700 text-sm font-medium hover:bg-gray-300 transition-colors duration-300" aria-pressed="false">AI/ML</button>
+            </div>
+
+            <!-- Filter Dropdowns and Search -->
+            <div class="flex flex-col md:flex-row justify-center items-center gap-4 mb-12">
+                <div class="relative w-full md:w-auto">
+                    <label for="level-filter" class="sr-only">Filter by Level</label>
+                    <select id="level-filter" class="block appearance-none w-full bg-white border border-gray-300 text-gray-700 py-3 px-4 pr-8 rounded-lg leading-tight focus:outline-none focus:ring-2 focus:ring-purple-500">
+                        <option value="">Levels</option>
+                        <option value="Beginner">Beginner</option>
+                        <option value="Intermediate">Intermediate</option>
+                        <option value="Advanced">Advanced</option>
+                    </select>
+                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700" aria-hidden="true">
+                        <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                    </div>
+                </div>
+                <div class="relative w-full md:w-auto">
+                    <label for="duration-filter" class="sr-only">Filter by Duration</label>
+                    <select id="duration-filter" class="block appearance-none w-full bg-white border border-gray-300 text-gray-700 py-3 px-4 pr-8 rounded-lg leading-tight focus:outline-none focus:ring-2 focus:ring-purple-500">
+                        <option value="">Duration</option>
+                        <option value="Short">Short</option>
+                        <option value="Medium">Medium</option>
+                        <option value="Long">Long</option>
+                    </select>
+                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700" aria-hidden="true">
+                        <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                    </div>
+                </div>
+                <div class="relative w-full md:w-auto">
+                    <label for="pricing-filter" class="sr-only">Filter by Pricing</label>
+                    <select id="pricing-filter" class="block appearance-none w-full bg-white border border-gray-300 text-gray-700 py-3 px-4 pr-8 rounded-lg leading-tight focus:outline-none focus:ring-2 focus:ring-purple-500">
+                        <option value="">Pricing</option>
+                        <option value="Free">Free</option>
+                        <option value="Paid">Paid</option>
+                    </select>
+                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700" aria-hidden="true">
+                        <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                    </div>
+                </div>
+                <div class="relative w-full md:w-auto">
+                    <label for="search-input" class="sr-only">Search courses</label>
+                    <input type="text" id="search-input" placeholder="Search all courses" class="w-full bg-white border border-gray-300 text-gray-700 py-3 px-4 rounded-lg leading-tight focus:outline-none focus:ring-2 focus:ring-purple-500">
+                    <div class="absolute inset-y-0 right-0 flex items-center px-3 text-gray-500" aria-hidden="true">
+                        <i class="fas fa-search"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Course Cards Grid -->
+            <div id="course-cards-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+                <!-- Course cards will be dynamically inserted here by JavaScript -->
+            </div>
+
+            <!-- Pagination -->
+            <div id="pagination-controls" class="flex justify-center items-center mt-12 space-x-2" role="navigation" aria-label="Course pagination">
+                <!-- Pagination buttons will be dynamically inserted here by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Mentors Section -->
+    <section id="mentors-section" class="py-16 md:py-24 px-6 md:px-12 bg-white text-gray-800 text-center">
+        <div class="container mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold mb-6">Our Expert Mentors</h2>
+            <p class="text-lg text-gray-600 mb-10 max-w-2xl mx-auto">
+                Learn from the best in the industry. Our mentors are experienced professionals passionate about teaching.
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Mentor Card 1 -->
+                <div class="bg-gray-100 p-6 rounded-xl shadow-md flex flex-col items-center">
+                    <img src="https://png.pngtree.com/png-vector/20200718/ourmid/pngtree-student-with-her-books-and-backpack-flat-illustration-vector-png-image_2307570.jpg" alt="Mentor Dr. Jane Doe" class="w-24 h-24 rounded-full mb-4 object-cover" loading="lazy">
+                    <h3 class="font-bold text-xl mb-2">Dr. Jane Doe</h3>
+                    <p class="text-purple-700 font-medium mb-2">AI & Machine Learning Specialist</p>
+                    <p class="text-gray-600 text-sm text-center">Dr. Doe has over 15 years of experience in AI research and development, with a focus on neural networks and deep learning.</p>
+                </div>
+                <!-- Mentor Card 2 -->
+                <div class="bg-gray-100 p-6 rounded-xl shadow-md flex flex-col items-center">
+                    <img src="https://img.freepik.com/free-vector/young-student-boy_24877-76416.jpg?semt=ais_hybrid&w=740" alt="Mentor John Smith" class="w-24 h-24 rounded-full mb-4 object-cover" loading="lazy">
+                    <h3 class="font-bold text-xl mb-2">John Smith</h3>
+                    <p class="text-purple-700 font-medium mb-2">Full-Stack Web Developer</p>
+                    <p class="text-gray-600 text-sm text-center">John is a seasoned web developer with expertise in React, Node.js, and cloud technologies. He loves building scalable applications.</p>
+                </div>
+                <!-- Mentor Card 3 -->
+                <div class="bg-gray-100 p-6 rounded-xl shadow-md flex flex-col items-center">
+                    <img src="https://i.pinimg.com/736x/28/af/09/28af091441076e1ce35e008911f49fa3.jpg" alt="Mentor Sarah Lee" class="w-24 h-24 rounded-full mb-4 object-cover" loading="lazy">
+                    <h3 class="font-bold text-xl mb-2">Sarah Lee</h3>
+                    <p class="text-purple-700 font-medium mb-2">UI/UX Design Lead</p>
+                    <p class="text-gray-600 text-sm text-center">Sarah leads design teams at a top tech company, specializing in user-centered design principles and intuitive interface creation.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Us Section -->
+    <section id="about-us-section" class="py-16 md:py-24 px-6 md:px-12 bg-white text-gray-800 text-center">
+        <div class="container mx-auto max-w-3xl">
+            <h2 class="text-3xl md:text-4xl font-bold mb-6">About Edu Course</h2>
+            <p class="text-lg text-gray-600 mb-8">
+                At Edu Course, we believe that education should be accessible, engaging, and tailored to individual needs. Our mission is to empower learners worldwide by providing high-quality, expert-led courses in the most in-demand fields.
+            </p>
+            <p class="text-lg text-gray-600 mb-8">
+                Founded in 2025 by a team of passionate educators and tech innovators, Edu Course is built on the principle that learning should be a journey of discovery and growth. We leverage cutting-edge technology to create an immersive and interactive learning experience, ensuring that every student can achieve their full potential.
+            </p>
+            <p class="text-lg text-gray-600">
+                Join our community of thousands of students and transform your future with Edu Course.
+            </p>
+        </div>
+    </section>
+
+    <!-- Contact Us Section -->
+    <section id="contact-us-section" class="py-16 md:py-24 px-6 md:px-12 bg-white text-gray-800">
+        <div class="container mx-auto max-w-2xl">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-6">Contact Us</h2>
+            <p class="text-lg text-gray-600 text-center mb-10">
+                Have questions or need support? Reach out to us through the form below or find our contact details.
+            </p>
+            <form class="space-y-6 bg-gray-100 p-8 rounded-xl shadow-md" aria-label="Contact form">
+                <div>
+                    <label for="contact-name" class="block text-gray-700 text-sm font-bold mb-2">Your Name</label>
+                    <input type="text" id="contact-name" class="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-purple-500" placeholder="John Doe" required>
+                </div>
+                <div>
+                    <label for="contact-email" class="block text-gray-700 text-sm font-bold mb-2">Your Email</label>
+                    <input type="email" id="contact-email" class="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-purple-500" placeholder="john.doe@example.com" required>
+                </div>
+                <div>
+                    <label for="contact-subject" class="block text-gray-700 text-sm font-bold mb-2">Subject</label>
+                    <input type="text" id="contact-subject" class="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-purple-500" placeholder="Inquiry about courses" required>
+                </div>
+                <div>
+                    <label for="contact-message" class="block text-gray-700 text-sm font-bold mb-2">Message</label>
+                    <textarea id="contact-message" rows="6" class="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-purple-500" placeholder="Type your message here..." required></textarea>
+                </div>
+                <button type="submit" class="bg-purple-700 hover:bg-purple-800 text-white font-bold py-3 px-6 rounded-lg focus:outline-none focus:shadow-outline w-full transition-colors duration-300">
+                    Send Message
+                </button>
+            </form>
+            <div class="mt-10 text-center">
+                <p class="text-gray-700 mb-2"><i class="fas fa-envelope mr-2" aria-hidden="true"></i> info@educourse.com</p>
+                <p class="text-gray-700"><i class="fas fa-phone mr-2" aria-hidden="true"></i> +1 (123) 456-7890</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Blogs Section -->
+    <section id="blogs-section" class="py-16 md:py-24 px-6 md:px-12 bg-white text-gray-800 text-center">
+        <div class="container mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold mb-6">Our Latest Blogs</h2>
+            <p class="text-lg text-gray-600 mb-10 max-w-2xl mx-auto">
+                Stay updated with the latest trends in education, technology, and career development from our experts.
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Blog Post 1 -->
+                <div class="bg-gray-100 p-6 rounded-xl shadow-md text-left">
+                    <img src="https://st2.depositphotos.com/5425740/11034/v/450/depositphotos_110341528-stock-illustration-set-of-students-illustration.jpg" alt="Blog Post: The Future of Online Learning" class="w-full h-40 object-cover rounded-md mb-4" loading="lazy">
+                    <h3 class="font-bold text-xl mb-2">The Future of Online Learning</h3>
+                    <p class="text-gray-600 text-sm mb-4">Explore how technology is reshaping education and what to expect in the coming years.</p>
+                    <a href="#" class="text-purple-700 hover:underline font-medium" aria-label="Read more about The Future of Online Learning">Read More <i class="fas fa-arrow-right ml-1" aria-hidden="true"></i></a>
+                </div>
+                <!-- Blog Post 2 -->
+                <div class="bg-gray-100 p-6 rounded-xl shadow-md text-left">
+                    <img src="https://img.freepik.com/premium-vector/confident-female-student-portrait-holding-books_1316704-55469.jpg?semt=ais_hybrid&w=740" alt="Blog Post: Top 5 Skills for 2025" class="w-full h-40 object-cover rounded-md mb-4" loading="lazy">
+                    <h3 class="font-bold text-xl mb-2">Top 5 Skills for 2025</h3>
+                    <p class="text-gray-600 text-sm mb-4">Discover the most in-demand skills you need to thrive in the modern job market.</p>
+                    <a href="#" class="text-purple-700 hover:underline font-medium" aria-label="Read more about Top 5 Skills for 2025">Read More <i class="fas fa-arrow-right ml-1" aria-hidden="true"></i></a>
+                </div>
+                <!-- Blog Post 3 -->
+                <div class="bg-gray-100 p-6 rounded-xl shadow-md text-left">
+                    <img src="https://media.istockphoto.com/id/1262582734/vector/happy-girl-studying-with-books-student-girl-at-the-desk-writing-for-her-homework-back-to.jpg?s=612x612&w=0&k=20&c=AiXV4EkEfWsgnIILEkilYyIDVzhefIFckEOhP6wMf50=" alt="Blog Post: Mastering Data Science: A Beginner's Guide" class="w-full h-40 object-cover rounded-md mb-4" loading="lazy">
+                    <h3 class="font-bold text-xl mb-2">Mastering Data Science: A Beginner's Guide</h3>
+                    <p class="text-gray-600 text-sm mb-4">A comprehensive guide for aspiring data scientists to kickstart their journey.</p>
+                    <a href="#" class="text-purple-700 hover:underline font-medium" aria-label="Read more about Mastering Data Science: A Beginner's Guide">Read More <i class="fas fa-arrow-right ml-1" aria-hidden="true"></i></a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Section -->
+    <footer class="bg-white py-12 px-6 md:px-12 border-t border-gray-200">
+        <div class="container mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
+            <!-- Edu Course Info -->
+            <div>
+                <div class="flex items-center space-x-2 mb-4">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="#8B5CF6" stroke="#8B5CF6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <span class="text-2xl font-bold text-gray-800">Edu Course</span>
+                </div>
+                <p class="text-gray-600 text-sm mb-4">
+                    Edu Course is your gateway to expert-led, accessible online courses. Empower yourself to thrive in a fast-changing world, we offer courses designed to help you grow and achieve your goals, at your own pace.
+                </p>
+                <a href="#" class="text-gray-600 text-sm hover:underline flex items-center" aria-label="Back to top">
+                    Back to top <i class="fas fa-arrow-up ml-2" aria-hidden="true"></i>
+                </a>
+            </div>
+
+            <!-- Company Links -->
+            <div>
+                <h4 class="font-bold text-gray-800 mb-4">Company</h4>
+                <ul class="space-y-2 text-gray-600 text-sm">
+                    <li><a href="#" class="hover:underline">Home</a></li>
+                    <li><a href="#" class="hover:underline">Mentors</a></li>
+                    <li><a href="#" class="hover:underline">About Us</a></li>
+                </ul>
+            </div>
+
+            <!-- Support Links -->
+            <div>
+                <h4 class="font-bold text-gray-800 mb-4">Support</h4>
+                <ul class="space-y-2 text-gray-600 text-sm">
+                    <li><a href="#" class="hover:underline">Contact Us</a></li>
+                    <li><a href="#" class="hover:underline">Blogs</a></li>
+                </ul>
+            </div>
+
+            <!-- Courses Categories -->
+            <div>
+                <h4 class="font-bold text-gray-800 mb-4">Courses</h4>
+                <ul class="space-y-2 text-gray-600 text-sm">
+                    <li><a href="#" class="hover:underline">UI/UX Designing</a></li>
+                    <li><a href="#" class="hover:underline">Web Development</a></li>
+                    <li><a href="#" class="hover:underline">Data Visualization</a></li>
+                    <li><a href="#" class="hover:underline">Digital Marketing</a></li>
+                    <li><a href="#" class="hover:underline">AI/ML</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Copyright and Social Media -->
+        <div class="mt-12 pt-8 border-t border-gray-200 flex flex-col sm:flex-row justify-between items-center text-gray-600 text-sm">
+            <span>© 2025 — Copyright. All Rights Reserved.</span>
+            <div class="flex space-x-4 mt-4 sm:mt-0" aria-label="Social media links">
+                <a href="#" class="text-gray-600 hover:text-purple-700 transition-colors duration-300" aria-label="Facebook"><i class="fab fa-facebook-f" aria-hidden="true"></i></a>
+                <a href="#" class="text-gray-600 hover:text-purple-700 transition-colors duration-300" aria-label="Twitter"><i class="fab fa-twitter" aria-hidden="true"></i></a>
+                <a href="#" class="text-gray-600 hover:text-purple-700 transition-colors duration-300" aria-label="Instagram"><i class="fab fa-instagram" aria-hidden="true"></i></a>
+                <a href="#" class="text-gray-600 hover:text-purple-700 transition-colors duration-300" aria-label="LinkedIn"><i class="fab fa-linkedin-in" aria-hidden="true"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Register Now Modal -->
+    <div id="registerModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="registerModalTitle" tabindex="-1">
+        <div class="modal-content">
+            <span class="close-button" aria-label="Close registration form">&times;</span>
+            <h3 id="registerModalTitle" class="text-2xl font-bold text-gray-800 mb-4 text-center">Register for Edu Course</h3>
+            <form class="space-y-4">
+                <div>
+                    <label for="reg-name" class="block text-gray-700 text-sm font-bold mb-2">Full Name</label>
+                    <input type="text" id="reg-name" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Your Name" required>
+                </div>
+                <div>
+                    <label for="reg-email" class="block text-gray-700 text-sm font-bold mb-2">Email Address</label>
+                    <input type="email" id="reg-email" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="your@example.com" required>
+                </div>
+                <div>
+                    <label for="reg-password" class="block text-gray-700 text-sm font-bold mb-2">Password</label>
+                    <input type="password" id="reg-password" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" placeholder="********" required minlength="6">
+                </div>
+                <button type="submit" class="bg-purple-700 hover:bg-purple-800 text-white font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline w-full">
+                    Sign Up
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Course data array
+        const allCourses = [
+            {
+                category: "Graphic Design",
+                title: "Graphic design: Create stunning visuals for captivating brands.",
+                instructor: "Adam Moore",
+                rating: 4.0,
+                reviews: 256,
+                lessons: 10,
+                originalPrice: 50,
+                discountedPrice: 40,
+                image: "https://placehold.co/400x200/F0E6FA/8A2BE2?text=Graphic+Design",
+                level: "Beginner",
+                duration: "Short",
+                pricing: "Paid"
+            },
+            {
+                category: "Data Science",
+                title: "Data Science: Unlock the power of data with Python.",
+                instructor: "Sophia Moon",
+                rating: 4.5,
+                reviews: 390,
+                lessons: 15,
+                originalPrice: 60,
+                discountedPrice: 50,
+                image: "https://placehold.co/400x200/E0F7FA/00BCD4?text=Data+Science",
+                level: "Intermediate",
+                duration: "Medium",
+                pricing: "Paid"
+            },
+            {
+                category: "Web Development",
+                title: "Web Development: Build dynamic websites from scratch.",
+                instructor: "Ethan Sharma",
+                rating: 4.8,
+                reviews: 299,
+                lessons: 12,
+                originalPrice: 55,
+                discountedPrice: 45,
+                image: "https://placehold.co/400x200/F0FFF0/3CB371?text=Web+Development",
+                level: "Beginner",
+                duration: "Medium",
+                pricing: "Paid"
+            },
+            {
+                category: "Digital Marketing",
+                title: "Digital Marketing: Master the art of online growth.",
+                instructor: "Emily Brown",
+                rating: 4.0,
+                reviews: 354,
+                lessons: 10,
+                originalPrice: 50,
+                discountedPrice: 40,
+                image: "https://placehold.co/400x200/FFFBE0/FFD700?text=Marketing",
+                level: "Beginner",
+                duration: "Short",
+                pricing: "Paid"
+            },
+            {
+                category: "Development", // Changed from Programming to Development to match category button
+                title: "Programming: Code your way to future innovations.",
+                instructor: "John Williams",
+                rating: 4.5,
+                reviews: 296,
+                lessons: 10,
+                originalPrice: 50,
+                discountedPrice: 40,
+                image: "https://placehold.co/400x200/E0F7FA/8A2BE2?text=Programming",
+                level: "Intermediate",
+                duration: "Medium",
+                pricing: "Paid"
+            },
+            {
+                category: "Web Development", // Changed from Photography to Web Development to match category button
+                title: "Photography: Capture stunning moments like a pro.",
+                instructor: "Olivia Davis",
+                rating: 4.5,
+                reviews: 296,
+                lessons: 10,
+                originalPrice: 50,
+                discountedPrice: 40,
+                image: "https://placehold.co/400x200/F0FFF0/3CB371?text=Photography",
+                level: "Beginner",
+                duration: "Short",
+                pricing: "Paid"
+            },
+            {
+                category: "UI/UX Designing",
+                title: "UI/UX Fundamentals: Design user-centric interfaces.",
+                instructor: "Michael Chen",
+                rating: 4.2,
+                reviews: 180,
+                lessons: 8,
+                originalPrice: 45,
+                discountedPrice: 35,
+                image: "https://placehold.co/400x200/D1C4E9/673AB7?text=UI/UX",
+                level: "Beginner",
+                duration: "Short",
+                pricing: "Paid"
+            },
+            {
+                category: "AI/ML",
+                title: "Introduction to Machine Learning with Python.",
+                instructor: "Dr. Anya Sharma",
+                rating: 4.7,
+                reviews: 420,
+                lessons: 18,
+                originalPrice: 75,
+                discountedPrice: 65,
+                image: "https://placehold.co/400x200/C8E6C9/4CAF50?text=AI/ML",
+                level: "Advanced",
+                duration: "Long",
+                pricing: "Paid"
+            },
+            {
+                category: "Data Visualization",
+                title: "Mastering Data Visualization with D3.js.",
+                instructor: "David Lee",
+                rating: 4.6,
+                reviews: 310,
+                lessons: 14,
+                originalPrice: 65,
+                discountedPrice: 55,
+                image: "https://placehold.co/400x200/B3E5FC/03A9F4?text=Data+Viz",
+                level: "Intermediate",
+                duration: "Medium",
+                pricing: "Paid"
+            },
+            {
+                category: "Digital Marketing",
+                title: "SEO Strategies: Rank higher on search engines.",
+                instructor: "Sarah Johnson",
+                rating: 4.3,
+                reviews: 270,
+                lessons: 9,
+                originalPrice: 40,
+                discountedPrice: 30,
+                image: "https://placehold.co/400x200/FFECB3/FFC107?text=SEO",
+                level: "Beginner",
+                duration: "Short",
+                pricing: "Paid"
+            },
+            {
+                category: "Web Development",
+                title: "Frontend Development with React and Tailwind CSS.",
+                instructor: "Chris Evans",
+                rating: 4.9,
+                reviews: 500,
+                lessons: 20,
+                originalPrice: 80,
+                discountedPrice: 70,
+                image: "https://placehold.co/400x200/CFD8DC/607D8B?text=React+Dev",
+                level: "Advanced",
+                duration: "Long",
+                pricing: "Paid"
+            },
+            {
+                category: "UI/UX Designing",
+                title: "User Research Methods for UX Designers.",
+                instructor: "Jessica Kim",
+                rating: 4.4,
+                reviews: 210,
+                lessons: 7,
+                originalPrice: 50,
+                discountedPrice: 40,
+                image: "https://placehold.co/400x200/F8BBD0/E91E63?text=User+Research",
+                level: "Intermediate",
+                duration: "Short",
+                pricing: "Paid"
+            },
+            {
+                category: "AI/ML",
+                title: "Deep Learning with TensorFlow and Keras.",
+                instructor: "Dr. Alex Wong",
+                rating: 4.8,
+                reviews: 450,
+                lessons: 22,
+                originalPrice: 90,
+                discountedPrice: 80,
+                image: "https://placehold.co/400x200/BBDEFB/2196F3?text=Deep+Learning",
+                level: "Advanced",
+                duration: "Long",
+                pricing: "Paid"
+            },
+            {
+                category: "Data Science",
+                title: "SQL for Data Analysis: A Comprehensive Guide.",
+                instructor: "Robert Green",
+                rating: 4.1,
+                reviews: 300,
+                lessons: 11,
+                originalPrice: 55,
+                discountedPrice: 45,
+                image: "https://placehold.co/400x200/DCEDC8/8BC34A?text=SQL",
+                level: "Beginner",
+                duration: "Medium",
+                pricing: "Paid"
+            },
+            {
+                category: "Digital Marketing",
+                title: "Content Marketing Strategy for Businesses.",
+                instructor: "Laura Adams",
+                rating: 4.2,
+                reviews: 280,
+                lessons: 8,
+                originalPrice: 45,
+                discountedPrice: 35,
+                image: "https://placehold.co/400x200/FFCCBC/FF5722?text=Content+Marketing",
+                level: "Intermediate",
+                duration: "Short",
+                pricing: "Paid"
+            },
+            {
+                category: "Development",
+                title: "Introduction to Mobile App Development with Swift.",
+                instructor: "Daniel Lee",
+                rating: 4.6,
+                reviews: 380,
+                lessons: 16,
+                originalPrice: 70,
+                discountedPrice: 60,
+                image: "https://placehold.co/400x200/D7CCC8/795548?text=Mobile+Dev",
+                level: "Intermediate",
+                duration: "Medium",
+                pricing: "Paid"
+            },
+            {
+                category: "UI/UX Designing",
+                title: "Prototyping with Figma: From Concept to Clickable.",
+                instructor: "Sarah Miller",
+                rating: 4.7,
+                reviews: 330,
+                lessons: 9,
+                originalPrice: 55,
+                discountedPrice: 45,
+                image: "https://placehold.co/400x200/FCE4EC/AD1457?text=Figma",
+                level: "Beginner",
+                duration: "Short",
+                pricing: "Paid"
+            },
+            {
+                category: "AI/ML",
+                title: "Natural Language Processing (NLP) Fundamentals.",
+                instructor: "Dr. Ben Carter",
+                rating: 4.5,
+                reviews: 360,
+                lessons: 13,
+                originalPrice: 70,
+                discountedPrice: 60,
+                image: "https://placehold.co/400x200/EDE7F6/673AB7?text=NLP",
+                level: "Advanced",
+                duration: "Medium",
+                pricing: "Paid"
+            },
+            {
+                category: "Data Visualization",
+                title: "Interactive Dashboards with Tableau.",
+                instructor: "Grace Hopper",
+                rating: 4.3,
+                reviews: 290,
+                lessons: 10,
+                originalPrice: 60,
+                discountedPrice: 50,
+                image: "https://placehold.co/400x200/E1F5FE/0288D1?text=Tableau",
+                level: "Intermediate",
+                duration: "Short",
+                pricing: "Paid"
+            },
+            {
+                category: "Graphic Design",
+                title: "Adobe Illustrator Masterclass: Vector Graphics.",
+                instructor: "Mark Wilson",
+                rating: 4.6,
+                reviews: 300,
+                lessons: 12,
+                originalPrice: 55,
+                discountedPrice: 45,
+                image: "https://placehold.co/400x200/F3E5F5/9C27B0?text=Illustrator",
+                level: "Intermediate",
+                duration: "Medium",
+                pricing: "Paid"
+            },
+            {
+                category: "Development",
+                title: "Backend Development with Node.js and Express.",
+                instructor: "Sophia Rodriguez",
+                rating: 4.7,
+                reviews: 410,
+                lessons: 17,
+                originalPrice: 75,
+                discountedPrice: 65,
+                image: "https://placehold.co/400x200/E8F5E9/4CAF50?text=Node.js",
+                level: "Advanced",
+                duration: "Long",
+                pricing: "Paid"
+            },
+            {
+                category: "Digital Marketing",
+                title: "Social Media Marketing for Beginners.",
+                instructor: "James Taylor",
+                rating: 3.9,
+                reviews: 200,
+                lessons: 7,
+                originalPrice: 35,
+                discountedPrice: 25,
+                image: "https://placehold.co/400x200/FFFDE7/FFEB3B?text=Social+Media",
+                level: "Beginner",
+                duration: "Short",
+                pricing: "Paid"
+            },
+            {
+                category: "Data Science",
+                title: "Big Data Analytics with Apache Spark.",
+                instructor: "Dr. Emily Clark",
+                rating: 4.8,
+                reviews: 480,
+                lessons: 19,
+                originalPrice: 85,
+                discountedPrice: 75,
+                image: "https://placehold.co/400x200/E0F2F7/00ACC1?text=Big+Data",
+                level: "Advanced",
+                duration: "Long",
+                pricing: "Paid"
+            },
+            {
+                category: "Web Development",
+                title: "Full-Stack Web Development Bootcamp.",
+                instructor: "David Wilson",
+                rating: 4.9,
+                reviews: 550,
+                lessons: 25,
+                originalPrice: 100,
+                discountedPrice: 90,
+                image: "https://placehold.co/400x200/FBE9E7/FF7043?text=Fullstack",
+                level: "Advanced",
+                duration: "Long",
+                pricing: "Paid"
+            },
+            {
+                category: "Graphic Design",
+                title: "Typography Masterclass: Fonts and Pairing.",
+                instructor: "Anna Green",
+                rating: 4.2,
+                reviews: 220,
+                lessons: 8,
+                originalPrice: 40,
+                discountedPrice: 30,
+                image: "https://placehold.co/400x200/F1F8E9/8BC34A?text=Typography",
+                level: "Beginner",
+                duration: "Short",
+                pricing: "Paid"
+            },
+            {
+                category: "AI/ML",
+                title: "Computer Vision with OpenCV and Python.",
+                instructor: "Dr. Kevin Brown",
+                rating: 4.7,
+                reviews: 400,
+                lessons: 16,
+                originalPrice: 80,
+                discountedPrice: 70,
+                image: "https://placehold.co/400x200/E3F2FD/2196F3?text=Computer+Vision",
+                level: "Advanced",
+                duration: "Medium",
+                pricing: "Paid"
+            },
+            {
+                category: "Data Visualization",
+                title: "Storytelling with Data: Effective Visualizations.",
+                instructor: "Chris Davis",
+                rating: 4.4,
+                reviews: 260,
+                lessons: 9,
+                originalPrice: 50,
+                discountedPrice: 40,
+                image: "https://placehold.co/400x200/FCE4EC/D81B60?text=Data+Story",
+                level: "Intermediate",
+                duration: "Short",
+                pricing: "Paid"
+            },
+            {
+                category: "Development",
+                title: "Game Development with Unity and C#.",
+                instructor: "Alex Johnson",
+                rating: 4.8,
+                reviews: 430,
+                lessons: 18,
+                originalPrice: 90,
+                discountedPrice: 80,
+                image: "https://placehold.co/400x200/FFE0B2/FF9800?text=Game+Dev",
+                level: "Advanced",
+                duration: "Long",
+                pricing: "Paid"
+            },
+            {
+                category: "Digital Marketing",
+                title: "Email Marketing Mastery: Build Your List.",
+                instructor: "Maria Garcia",
+                rating: 4.1,
+                reviews: 230,
+                lessons: 6,
+                originalPrice: 30,
+                discountedPrice: 20,
+                image: "https://placehold.co/400x200/EFEBE9/795548?text=Email+Marketing",
+                level: "Beginner",
+                duration: "Short",
+                pricing: "Paid"
+            },
+            {
+                category: "UI/UX Designing",
+                title: "Responsive Web Design Principles.",
+                instructor: "Sophia Brown",
+                rating: 4.5,
+                reviews: 300,
+                lessons: 10,
+                originalPrice: 48,
+                discountedPrice: 38,
+                image: "https://placehold.co/400x200/DCE775/AFB42B?text=Responsive+Design",
+                level: "Intermediate",
+                duration: "Medium",
+                pricing: "Paid"
+            },
+            {
+                category: "Data Science",
+                title: "Machine Learning Engineering for Production.",
+                instructor: "Dr. Liam Smith",
+                rating: 4.9,
+                reviews: 520,
+                lessons: 25,
+                originalPrice: 110,
+                discountedPrice: 100,
+                image: "https://placehold.co/400x200/B2EBF2/00BCD4?text=MLE",
+                level: "Advanced",
+                duration: "Long",
+                pricing: "Paid"
+            }
+        ];
+
+        let filteredCourses = [...allCourses];
+        let currentPage = 1;
+        const coursesPerPage = 8;
+
+        // No longer need mainContentArea as all content is static
+        const registerNowBtn = document.getElementById('register-now-btn');
+        const mobileRegisterBtn = document.getElementById('mobile-register-btn');
+        const registerModal = document.getElementById('registerModal');
+        const closeButton = document.querySelector('.close-button');
+        const navLinks = document.querySelectorAll('nav a'); // Desktop nav links
+        const hamburgerBtn = document.getElementById('hamburger-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileNavLinks = document.querySelectorAll('#mobile-menu .mobile-nav-link'); // Mobile nav links
+
+        let lastFocusedElement = null;
+
+        const debounce = (func, delay) => {
+            let timeout;
+            return function(...args) {
+                const context = this;
+                clearTimeout(timeout);
+                timeout = setTimeout(() => func.apply(context, args), delay);
+            };
+        };
+
+        function renderCourseCards() {
+            const courseCardsGrid = document.getElementById('course-cards-grid');
+            if (!courseCardsGrid) return;
+
+            courseCardsGrid.innerHTML = '';
+
+            const startIndex = (currentPage - 1) * coursesPerPage;
+            const endIndex = startIndex + coursesPerPage;
+            const coursesToRender = filteredCourses.slice(startIndex, endIndex);
+
+            coursesToRender.forEach(course => {
+                const courseCard = `
+                    <div class="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-200 hover:shadow-xl transition-shadow duration-300">
+                        <img src="${course.image}" alt="${course.title}" class="w-full h-48 object-cover" loading="lazy">
+                        <div class="p-6">
+                            <span class="bg-purple-100 text-purple-700 text-xs font-semibold px-3 py-1 rounded-full mb-3 inline-block">${course.category}</span>
+                            <h3 class="font-bold text-lg mb-2 text-gray-800">${course.title}</h3>
+                            <div class="flex items-center text-gray-600 text-sm mb-4">
+                                <img src="https://placehold.co/24x24/FFD700/FFFFFF?text=${course.instructor.charAt(0)}" alt="Instructor avatar for ${course.instructor}" class="w-6 h-6 rounded-full mr-2" loading="lazy">
+                                <span>${course.instructor}</span>
+                            </div>
+                            <div class="flex justify-between items-center mb-4">
+                                <div class="flex items-center text-yellow-500 text-sm" role="img" aria-label="Rating: ${course.rating} out of 5 stars based on ${course.reviews} reviews">
+                                    <i class="fas fa-star mr-1" aria-hidden="true"></i> ${course.rating} (${course.reviews})
+                                </div>
+                                <div class="text-gray-600 text-sm">
+                                    <i class="fas fa-book mr-1" aria-hidden="true"></i> ${course.lessons} lessons
+                                </div>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-500 line-through mr-2">$${course.originalPrice}</span>
+                                <span class="text-purple-700 font-bold text-xl">$${course.discountedPrice}</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                courseCardsGrid.insertAdjacentHTML('beforeend', courseCard);
+            });
+            renderPagination();
+        }
+
+        function renderPagination() {
+            const paginationControls = document.getElementById('pagination-controls');
+            if (!paginationControls) return;
+
+            paginationControls.innerHTML = '';
+
+            const totalPages = Math.ceil(filteredCourses.length / coursesPerPage);
+
+            const prevButton = document.createElement('button');
+            prevButton.className = `px-4 py-2 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-100 transition-colors duration-300 ${currentPage === 1 ? 'opacity-50 cursor-not-allowed' : ''}`;
+            prevButton.innerHTML = '<i class="fas fa-arrow-left" aria-hidden="true"></i> Prev';
+            prevButton.disabled = currentPage === 1;
+            prevButton.setAttribute('aria-label', 'Previous page');
+            prevButton.addEventListener('click', () => {
+                if (currentPage > 1) {
+                    currentPage--;
+                    renderCourseCards();
+                }
+            });
+            paginationControls.appendChild(prevButton);
+
+            for (let i = 1; i <= totalPages; i++) {
+                const pageButton = document.createElement('button');
+                pageButton.className = `px-4 py-2 rounded-lg ${currentPage === i ? 'bg-purple-700 text-white font-medium' : 'border border-gray-300 text-gray-700 hover:bg-gray-100'} transition-colors duration-300`;
+                pageButton.textContent = i;
+                pageButton.setAttribute('aria-label', `Page ${i}`);
+                if (currentPage === i) {
+                    pageButton.setAttribute('aria-current', 'page');
+                }
+                pageButton.addEventListener('click', () => {
+                    currentPage = i;
+                    renderCourseCards();
+                });
+                paginationControls.appendChild(pageButton);
+            }
+
+            const nextButton = document.createElement('button');
+            nextButton.className = `px-4 py-2 rounded-lg bg-purple-700 text-white font-medium hover:bg-purple-800 transition-colors duration-300 ${currentPage === totalPages ? 'opacity-50 cursor-not-allowed' : ''}`;
+            nextButton.innerHTML = 'Next <i class="fas fa-arrow-right" aria-hidden="true"></i>';
+            nextButton.disabled = currentPage === totalPages;
+            nextButton.setAttribute('aria-label', 'Next page');
+            nextButton.addEventListener('click', () => {
+                if (currentPage < totalPages) {
+                    currentPage++;
+                    renderCourseCards();
+                }
+            });
+            paginationControls.appendChild(nextButton);
+        }
+
+        function applyFilters() {
+            let tempCourses = [...allCourses];
+
+            const categoryButtons = document.querySelectorAll('#category-filters button');
+            const activeCategoryButton = Array.from(categoryButtons).find(button => button.classList.contains('bg-purple-700'));
+            const selectedCategory = activeCategoryButton ? activeCategoryButton.dataset.category : 'All courses';
+            if (selectedCategory !== 'All courses') {
+                tempCourses = tempCourses.filter(course => course.category === selectedCategory);
+            }
+
+            const levelFilter = document.getElementById('level-filter');
+            const selectedLevel = levelFilter ? levelFilter.value : '';
+            if (selectedLevel) {
+                tempCourses = tempCourses.filter(course => course.level === selectedLevel);
+            }
+
+            const durationFilter = document.getElementById('duration-filter');
+            const selectedDuration = durationFilter ? durationFilter.value : '';
+            if (selectedDuration) {
+                tempCourses = tempCourses.filter(course => course.duration === selectedDuration);
+            }
+
+            const pricingFilter = document.getElementById('pricing-filter');
+            const selectedPricing = pricingFilter ? pricingFilter.value : '';
+            if (selectedPricing) {
+                if (selectedPricing === 'Free') {
+                    tempCourses = tempCourses.filter(course => course.discountedPrice === 0);
+                } else if (selectedPricing === 'Paid') {
+                    tempCourses = tempCourses.filter(course => course.discountedPrice > 0);
+                }
+            }
+
+            const searchInput = document.getElementById('search-input');
+            const searchTerm = searchInput ? searchInput.value.toLowerCase() : '';
+            if (searchTerm) {
+                tempCourses = tempCourses.filter(course =>
+                    course.title.toLowerCase().includes(searchTerm) ||
+                    course.instructor.toLowerCase().includes(searchTerm) ||
+                    course.category.toLowerCase().includes(searchTerm)
+                );
+            }
+
+            filteredCourses = tempCourses;
+            currentPage = 1;
+            renderCourseCards();
+        }
+
+        function attachCoursePageListeners() {
+            const categoryButtons = document.querySelectorAll('#category-filters button');
+            const levelFilter = document.getElementById('level-filter');
+            const durationFilter = document.getElementById('duration-filter');
+            const pricingFilter = document.getElementById('pricing-filter');
+            const searchInput = document.getElementById('search-input');
+
+            categoryButtons.forEach(button => {
+                button.removeEventListener('click', handleCategoryButtonClick);
+                button.addEventListener('click', handleCategoryButtonClick);
+            });
+
+            if (levelFilter) {
+                levelFilter.removeEventListener('change', applyFilters);
+                levelFilter.addEventListener('change', applyFilters);
+            }
+            if (durationFilter) {
+                durationFilter.removeEventListener('change', applyFilters);
+                durationFilter.addEventListener('change', applyFilters);
+            }
+            if (pricingFilter) {
+                pricingFilter.removeEventListener('change', applyFilters);
+                pricingFilter.addEventListener('change', applyFilters);
+            }
+            if (searchInput) {
+                const debouncedApplyFilters = debounce(applyFilters, 300);
+                searchInput.removeEventListener('input', debouncedApplyFilters);
+                searchInput.addEventListener('input', debouncedApplyFilters);
+            }
+        }
+
+        function handleCategoryButtonClick(event) {
+            const categoryButtons = document.querySelectorAll('#category-filters button');
+            categoryButtons.forEach(btn => {
+                btn.classList.remove('bg-purple-700', 'text-white');
+                btn.classList.add('bg-gray-200', 'text-gray-700');
+                btn.setAttribute('aria-pressed', 'false');
+            });
+            event.target.classList.remove('bg-gray-200', 'text-gray-700');
+            event.target.classList.add('bg-purple-700', 'text-white');
+            event.target.setAttribute('aria-pressed', 'true');
+            applyFilters();
+        }
+
+        // Event Listeners for Navbar Links (desktop and mobile)
+        // Use a single listener for all nav links and mobile nav links
+        document.querySelectorAll('nav a, #mobile-menu .mobile-nav-link').forEach(link => {
+            link.addEventListener('click', (event) => {
+                event.preventDefault(); // Prevent default link behavior
+                const targetId = event.target.getAttribute('href'); // Get the href (e.g., "#home-section")
+                const targetElement = document.querySelector(targetId);
+
+                if (targetElement) {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+
+                    // Close mobile menu if open
+                    mobileMenu.style.display = 'none';
+                    hamburgerBtn.setAttribute('aria-expanded', 'false');
+
+                    // Update aria-current for active nav link (simple version for single page)
+                    navLinks.forEach(navLink => {
+                        if (navLink.getAttribute('href') === targetId) {
+                            navLink.setAttribute('aria-current', 'page');
+                        } else {
+                            navLink.removeAttribute('aria-current');
+                        }
+                    });
+                    mobileNavLinks.forEach(mobileLink => {
+                        if (mobileLink.getAttribute('href') === targetId) {
+                            mobileLink.classList.add('bg-purple-800');
+                        } else {
+                            mobileLink.classList.remove('bg-purple-800');
+                        }
+                    });
+                }
+            });
+        });
+
+        // Hamburger menu toggle
+        hamburgerBtn.addEventListener('click', () => {
+            const isExpanded = mobileMenu.style.display === 'flex';
+            mobileMenu.style.display = isExpanded ? 'none' : 'flex';
+            hamburgerBtn.setAttribute('aria-expanded', !isExpanded);
+        });
+
+        // Event Listeners for Register Now Modal (Desktop and Mobile)
+        registerNowBtn.addEventListener('click', () => {
+            lastFocusedElement = document.activeElement;
+            registerModal.style.display = 'flex';
+            registerModal.focus();
+            // Close mobile menu if open
+            mobileMenu.style.display = 'none';
+            hamburgerBtn.setAttribute('aria-expanded', 'false');
+        });
+
+        mobileRegisterBtn.addEventListener('click', () => {
+            lastFocusedElement = document.activeElement;
+            registerModal.style.display = 'flex';
+            registerModal.focus();
+            // Close mobile menu if open
+            mobileMenu.style.display = 'none';
+            hamburgerBtn.setAttribute('aria-expanded', 'false');
+        });
+
+        closeButton.addEventListener('click', () => {
+            registerModal.style.display = 'none';
+            if (lastFocusedElement) {
+                lastFocusedElement.focus();
+            }
+        });
+
+        window.addEventListener('click', (event) => {
+            if (event.target === registerModal) {
+                registerModal.style.display = 'none';
+                if (lastFocusedElement) {
+                    lastFocusedElement.focus();
+                }
+            }
+        });
+
+        registerModal.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape') {
+                registerModal.style.display = 'none';
+                if (lastFocusedElement) {
+                    lastFocusedElement.focus();
+                }
+            } else if (event.key === 'Tab') {
+                const focusableElements = registerModal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+                const firstFocusableElement = focusableElements[0];
+                const lastFocusableElement = focusableElements[focusableElements.length - 1];
+
+                if (event.shiftKey) {
+                    if (document.activeElement === firstFocusableElement) {
+                        lastFocusableElement.focus();
+                        event.preventDefault();
+                    }
+                } else {
+                    if (document.activeElement === lastFocusableElement) {
+                        firstFocusableElement.focus();
+                        event.preventDefault();
+                    }
+                }
+            }
+        });
+
+        // Initial setup for the courses section when the page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            renderCourseCards(); // Render courses for the courses section
+            attachCoursePageListeners(); // Attach listeners for filters and search
+        });
+    </script>
+</body>
+</html>
